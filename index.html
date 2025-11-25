@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DA.C.CO - Darcy Commercial Company</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            margin-left: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .logo-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-filters {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+            max-width: 400px;
+            margin: 0 20px;
+        }
+        
+        .header-filters .form-group {
+            margin-bottom: 0;
+            flex: 1;
+        }
+        
+        .header-filters label {
+            color: white;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .header-filters select {
+            padding: 8px;
+            font-size: 14px;
+            width: 100%;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-light {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .btn-light:hover {
+            background-color: #bdc3c7;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+        
+        .form-footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .form-footer a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        
+        .admin-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 40px 0;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-company {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .product-price {
+            font-weight: bold;
+            color: var(--accent-color);
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        
+        .filters {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+        
+        .dashboard {
+            padding: 40px 0;
+        }
+        
+        .dashboard-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .dashboard-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--secondary-color);
+        }
+        
+        .upload-area p {
+            margin-top: 10px;
+            color: #7f8c8d;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .verified-badge {
+            display: inline-block;
+            background-color: var(--success-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .pending-badge {
+            display: inline-block;
+            background-color: var(--warning-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .auto-verify-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .auto-verify-on {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .auto-verify-off {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #34495e;
+            margin-top: 20px;
+            color: #bdc3c7;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-filters {
+                order: 3;
+                margin: 15px 0;
+                max-width: 100%;
+                width: 100%;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            .auth-buttons {
+                margin-top: 15px;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .auth-buttons .btn {
+                width: 100%;
+                max-width: 250px;
+                margin-bottom: 10px;
+            }
+            
+            .dashboard-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-circle">DACCO</div>
+                <h1>DA.C.CO</h1>
+            </div>
+            
+            <!-- Filter in header between logo and navigation -->
+            <div class="header-filters" id="header-filters">
+                <div class="form-group">
+                    <label for="province-filter">Province</label>
+                    <select id="province-filter">
+                        <option value="">All Provinces</option>
+                        <option value="Northern Province">Northern Province</option>
+                        <option value="Southern Province">Southern Province</option>
+                        <option value="Kigali City">Kigali City</option>
+                        <option value="Eastern Province">Eastern Province</option>
+                        <option value="Western Province">Western Province</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="district-filter">District</label>
+                    <select id="district-filter">
+                        <option value="">All Districts</option>
+                    </select>
+                </div>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#" id="home-link">Home</a></li>
+                    <li><a href="#" id="products-link">Products</a></li>
+                    <li><a href="#" id="about-link">About</a></li>
+                    <li><a href="#" id="contact-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons" id="header-auth-buttons">
+                <button class="btn btn-primary" id="login-btn">Log In</button>
+                <button class="btn btn-secondary" id="admin-login-btn">Admin Login</button>
+            </div>
+            <div class="user-info" id="user-info" style="display: none;">
+                <div class="user-avatar" id="user-avatar">U</div>
+                <span id="user-name">User</span>
+                <button class="btn btn-light" id="logout-btn" style="margin-left: 15px;">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero" id="hero-section" style="display: none;">
+            <div class="container">
+                <h2>Welcome to DA.C.CO</h2>
+                <p>Your trusted online marketplace connecting local businesses with customers across Rwanda</p>
+            </div>
+        </section>
+
+        <!-- Customer View - Now the default landing page -->
+        <section id="customer-view">
+            <!-- Removed the filters section from here since it's now in the header -->
+            <div class="products-grid" id="products-grid">
+                <!-- Products will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Seller Dashboard -->
+        <section id="seller-dashboard" style="display: none;">
+            <div class="dashboard">
+                <h2>Seller Dashboard</h2>
+                <div class="dashboard-actions">
+                    <button class="btn btn-primary" id="add-product-btn">Add New Product</button>
+                    <button class="btn btn-light" id="view-products-btn">View My Products</button>
+                    <button class="btn btn-secondary" id="account-settings-btn">Account Settings</button>
+                </div>
+                <div class="dashboard-content" id="dashboard-content">
+                    <!-- Dashboard content will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Dashboard -->
+        <section id="admin-dashboard" style="display: none;">
+            <div class="dashboard">
+                <h2>Admin Dashboard</h2>
+                <div class="dashboard-actions">
+                    <button class="btn btn-primary" id="view-sellers-btn">View Sellers</button>
+                    <button class="btn btn-light" id="view-products-admin-btn">View All Products</button>
+                    <button class="btn btn-success" id="auto-verify-btn">Auto Verify: OFF</button>
+                </div>
+                <div class="dashboard-content" id="admin-content">
+                    <!-- Admin content will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About DA.C.CO</h3>
+                    <p>Darcy Commercial Company is a trusted online marketplace connecting local businesses with customers across Rwanda.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Products</a></li>
+                        <li><a href="#">Sell on DA.C.CO</a></li>
+                        <li><a href="#">Help Center</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>Email: info@dacco.rw</li>
+                        <li>Phone: +250 788 123 456</li>
+                        <li>Address: Kigali, Rwanda</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 DA.C.CO - Darcy Commercial Company. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-login">&times;</span>
+            <h2>Log In</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-phone">Contact Number</label>
+                    <input type="tel" id="login-phone" placeholder="07XX XXX XXX" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Log In</button>
+            </form>
+            <div class="form-footer">
+                <p>Don't have an account? <a href="#" id="show-register">Register as Seller</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-register">&times;</span>
+            <h2>Register as Seller</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="reg-name">Full Name</label>
+                    <input type="text" id="reg-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-business">Business Name</label>
+                    <input type="text" id="reg-business" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-phone">Contact Number</label>
+                    <input type="tel" id="reg-phone" placeholder="07XX XXX XXX" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-province">Province</label>
+                    <select id="reg-province" required>
+                        <option value="">Select Province</option>
+                        <option value="Northern Province">Northern Province</option>
+                        <option value="Southern Province">Southern Province</option>
+                        <option value="Kigali City">Kigali City</option>
+                        <option value="Eastern Province">Eastern Province</option>
+                        <option value="Western Province">Western Province</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reg-district">District</label>
+                    <select id="reg-district" required>
+                        <option value="">Select District</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+            </form>
+            <div class="form-footer">
+                <p>Already have an account? <a href="#" id="show-login">Log In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="admin-login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-admin">&times;</span>
+            <h2>Admin Login</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-password">Password</label>
+                    <input type="password" id="admin-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Log In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div id="add-product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-add-product">&times;</span>
+            <h2>Add New Product</h2>
+            <form id="add-product-form">
+                <div class="form-group">
+                    <label for="product-name">Product Name</label>
+                    <input type="text" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-price">Price (RWF)</label>
+                    <input type="number" id="product-price" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-description">Description</label>
+                    <textarea id="product-description" rows="3" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Product Image</label>
+                    <div class="upload-area" id="upload-area">
+                        <p>Click to upload or drag and drop</p>
+                        <p>JPEG or PNG, max 5MB</p>
+                        <input type="file" id="product-image" accept=".jpg,.jpeg,.png" style="display: none;">
+                    </div>
+                    <div id="image-preview" style="margin-top: 15px;"></div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Add Product</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Data structure for the application
+        let users = JSON.parse(localStorage.getItem('dacco_users')) || [];
+        let products = JSON.parse(localStorage.getItem('dacco_products')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('dacco_currentUser')) || null;
+        let currentView = 'customer'; // Default to customer view
+        let autoVerify = JSON.parse(localStorage.getItem('dacco_autoVerify')) || false;
+
+        // District data
+        const districts = {
+            'Northern Province': ['Burera', 'Gakenke', 'Gicumbi', 'Musanze', 'Rulindo'],
+            'Southern Province': ['Gisagara', 'Huye', 'Kamonyi', 'Muhanga', 'Nyamagabe', 'Nyanza', 'Nyaruguru', 'Ruhango'],
+            'Kigali City': ['Gasabo', 'Kicukiro', 'Nyarugenge'],
+            'Eastern Province': ['Bugesera', 'Gatsibo', 'Kayonza', 'Kirehe', 'Ngoma', 'Nyagatare', 'Rwamagana'],
+            'Western Province': ['Karongi', 'Ngororero', 'Nyabihu', 'Nyamasheke', 'Rubavu', 'Rusizi', 'Rutsiro']
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            checkUserStatus();
+            updateAutoVerifyButton();
+        });
+
+        function initializeApp() {
+            // Removed sample seller and products as requested
+            // The app will start with empty data
+        }
+
+        function setupEventListeners() {
+            // Navigation
+            document.getElementById('home-link').addEventListener('click', () => showCustomerView());
+            document.getElementById('products-link').addEventListener('click', () => showCustomerView());
+            document.getElementById('logout-btn').addEventListener('click', logout);
+            
+            // Auth buttons - now in header
+            document.getElementById('login-btn').addEventListener('click', () => showModal('login-modal'));
+            document.getElementById('admin-login-btn').addEventListener('click', () => showModal('admin-login-modal'));
+            
+            // Modal close buttons
+            document.getElementById('close-login').addEventListener('click', () => closeModal('login-modal'));
+            document.getElementById('close-register').addEventListener('click', () => closeModal('register-modal'));
+            document.getElementById('close-admin').addEventListener('click', () => closeModal('admin-login-modal'));
+            document.getElementById('close-add-product').addEventListener('click', () => closeModal('add-product-modal'));
+            
+            // Form submissions
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            document.getElementById('register-form').addEventListener('submit', handleRegistration);
+            document.getElementById('admin-login-form').addEventListener('submit', handleAdminLogin);
+            document.getElementById('add-product-form').addEventListener('submit', handleAddProduct);
+            
+            // Link between modals
+            document.getElementById('show-register').addEventListener('click', (e) => {
+                e.preventDefault();
+                closeModal('login-modal');
+                showModal('register-modal');
+            });
+            
+            document.getElementById('show-login').addEventListener('click', (e) => {
+                e.preventDefault();
+                closeModal('register-modal');
+                showModal('login-modal');
+            });
+            
+            // Province change for registration
+            document.getElementById('reg-province').addEventListener('change', updateDistrictOptions);
+            
+            // Province and district change for filters - now automatic
+            document.getElementById('province-filter').addEventListener('change', function() {
+                updateDistrictFilter();
+                loadProducts(); // Automatically apply filter when province changes
+            });
+            
+            document.getElementById('district-filter').addEventListener('change', function() {
+                loadProducts(); // Automatically apply filter when district changes
+            });
+            
+            // Seller dashboard actions
+            document.getElementById('add-product-btn').addEventListener('click', () => showModal('add-product-modal'));
+            document.getElementById('view-products-btn').addEventListener('click', showSellerProducts);
+            document.getElementById('account-settings-btn').addEventListener('click', showAccountSettings);
+            
+            // Admin dashboard actions
+            document.getElementById('view-sellers-btn').addEventListener('click', showSellersAdmin);
+            document.getElementById('view-products-admin-btn').addEventListener('click', showProductsAdmin);
+            document.getElementById('auto-verify-btn').addEventListener('click', toggleAutoVerify);
+            
+            // Image upload
+            document.getElementById('upload-area').addEventListener('click', () => {
+                document.getElementById('product-image').click();
+            });
+            
+            document.getElementById('product-image').addEventListener('change', handleImageUpload);
+        }
+
+        function checkUserStatus() {
+            if (currentUser) {
+                document.getElementById('user-info').style.display = 'flex';
+                document.getElementById('header-auth-buttons').style.display = 'none';
+                document.getElementById('user-name').textContent = currentUser.name;
+                document.getElementById('user-avatar').textContent = currentUser.name.charAt(0).toUpperCase();
+                
+                if (currentUser.type === 'seller') {
+                    showSellerDashboard();
+                } else if (currentUser.type === 'admin') {
+                    showAdminDashboard();
+                }
+            } else {
+                document.getElementById('user-info').style.display = 'none';
+                document.getElementById('header-auth-buttons').style.display = 'flex';
+                showCustomerView(); // Show customer view by default
+            }
+        }
+
+        function showCustomerView() {
+            hideAllViews();
+            document.getElementById('customer-view').style.display = 'block';
+            document.getElementById('header-filters').style.display = 'flex';
+            currentView = 'customer';
+            loadProducts();
+        }
+
+        function showSellerDashboard() {
+            hideAllViews();
+            document.getElementById('seller-dashboard').style.display = 'block';
+            document.getElementById('header-filters').style.display = 'none';
+            currentView = 'seller';
+            showSellerProducts();
+        }
+
+        function showAdminDashboard() {
+            hideAllViews();
+            document.getElementById('admin-dashboard').style.display = 'block';
+            document.getElementById('header-filters').style.display = 'none';
+            currentView = 'admin';
+            showSellersAdmin();
+        }
+
+        function hideAllViews() {
+            document.getElementById('hero-section').style.display = 'none';
+            document.getElementById('customer-view').style.display = 'none';
+            document.getElementById('seller-dashboard').style.display = 'none';
+            document.getElementById('admin-dashboard').style.display = 'none';
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function updateDistrictOptions() {
+            const provinceSelect = document.getElementById('reg-province');
+            const districtSelect = document.getElementById('reg-district');
+            const province = provinceSelect.value;
+            
+            districtSelect.innerHTML = '<option value="">Select District</option>';
+            
+            if (province && districts[province]) {
+                districts[province].forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        }
+
+        function updateDistrictFilter() {
+            const provinceSelect = document.getElementById('province-filter');
+            const districtSelect = document.getElementById('district-filter');
+            const province = provinceSelect.value;
+            
+            districtSelect.innerHTML = '<option value="">All Districts</option>';
+            
+            if (province && districts[province]) {
+                districts[province].forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        }
+
+        function toggleAutoVerify() {
+            autoVerify = !autoVerify;
+            localStorage.setItem('dacco_autoVerify', JSON.stringify(autoVerify));
+            updateAutoVerifyButton();
+            alert(`Auto Verify is now ${autoVerify ? 'ON' : 'OFF'}`);
+        }
+
+        function updateAutoVerifyButton() {
+            const button = document.getElementById('auto-verify-btn');
+            if (autoVerify) {
+                button.textContent = 'Auto Verify: ON';
+                button.classList.remove('btn-success');
+                button.classList.add('btn-secondary');
+            } else {
+                button.textContent = 'Auto Verify: OFF';
+                button.classList.remove('btn-secondary');
+                button.classList.add('btn-success');
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const phone = document.getElementById('login-phone').value;
+            const password = document.getElementById('login-password').value;
+            
+            const user = users.find(u => u.phone === phone && u.password === password);
+            
+            if (user) {
+                if (user.verified || user.type === 'admin') {
+                    currentUser = user;
+                    localStorage.setItem('dacco_currentUser', JSON.stringify(currentUser));
+                    closeModal('login-modal');
+                    checkUserStatus();
+                    alert('Login successful!');
+                } else {
+                    alert('Your account is pending verification by admin.');
+                }
+            } else {
+                alert('Invalid phone number or password.');
+            }
+        }
+
+        function handleRegistration(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const business = document.getElementById('reg-business').value;
+            const phone = document.getElementById('reg-phone').value;
+            const password = document.getElementById('reg-password').value;
+            const province = document.getElementById('reg-province').value;
+            const district = document.getElementById('reg-district').value;
+            
+            // Validate phone number (10 digits)
+            if (!/^\d{10}$/.test(phone)) {
+                alert('Please enter a valid 10-digit phone number.');
+                return;
+            }
+            
+            // Check if phone already exists
+            if (users.find(u => u.phone === phone)) {
+                alert('This phone number is already registered.');
+                return;
+            }
+            
+            const newUser = {
+                id: generateId(),
+                name,
+                business,
+                phone,
+                password,
+                province,
+                district,
+                verified: false, // Admin must verify
+                type: 'seller'
+            };
+            
+            users.push(newUser);
+            saveUsers();
+            
+            closeModal('register-modal');
+            alert('Registration successful! Your account is pending admin verification.');
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const password = document.getElementById('admin-password').value;
+            
+            if (password === "DaRCY#08910z") {
+                currentUser = {
+                    id: generateId(),
+                    name: "Admin",
+                    type: "admin"
+                };
+                
+                localStorage.setItem('dacco_currentUser', JSON.stringify(currentUser));
+                closeModal('admin-login-modal');
+                checkUserStatus();
+            } else {
+                alert('Invalid admin password.');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('dacco_currentUser');
+            checkUserStatus();
+            showCustomerView();
+        }
+
+        function loadProducts() {
+            const productsGrid = document.getElementById('products-grid');
+            productsGrid.innerHTML = '';
+            
+            const provinceFilter = document.getElementById('province-filter').value;
+            const districtFilter = document.getElementById('district-filter').value;
+            
+            let filteredProducts = products.filter(product => product.verified);
+            
+            if (provinceFilter) {
+                const sellersInProvince = users.filter(user => 
+                    user.type === 'seller' && user.province === provinceFilter
+                );
+                
+                filteredProducts = filteredProducts.filter(product => 
+                    sellersInProvince.some(seller => seller.id === product.sellerId)
+                );
+                
+                if (districtFilter) {
+                    const sellersInDistrict = sellersInProvince.filter(user => 
+                        user.district === districtFilter
+                    );
+                    
+                    filteredProducts = filteredProducts.filter(product => 
+                        sellersInDistrict.some(seller => seller.id === product.sellerId)
+                    );
+                }
+            }
+            
+            if (filteredProducts.length === 0) {
+                productsGrid.innerHTML = '<p>No products found matching your filters.</p>';
+                return;
+            }
+            
+            filteredProducts.forEach(product => {
+                const seller = users.find(u => u.id === product.sellerId);
+                
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="product-company">${seller.business}</p>
+                        <p>${product.description}</p>
+                        <p class="product-price">RWF ${product.price.toLocaleString()}</p>
+                        <p><small>Contact: ${seller.phone}</small></p>
+                    </div>
+                `;
+                
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        function showSellerProducts() {
+            const dashboardContent = document.getElementById('dashboard-content');
+            const sellerProducts = products.filter(p => p.sellerId === currentUser.id);
+            
+            let html = '<h3>My Products</h3>';
+            
+            if (sellerProducts.length === 0) {
+                html += '<p>You have not added any products yet.</p>';
+            } else {
+                html += `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                sellerProducts.forEach(product => {
+                    html += `
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+                                    <div>
+                                        <strong>${product.name}</strong>
+                                        <p style="margin: 0; font-size: 0.9em;">${product.description}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>RWF ${product.price.toLocaleString()}</td>
+                            <td>
+                                ${product.verified ? 
+                                    '<span class="verified-badge">Verified</span>' : 
+                                    '<span class="pending-badge">Pending</span>'
+                                }
+                            </td>
+                            <td>
+                                <button class="action-btn btn-secondary" onclick="deleteProduct('${product.id}')">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+            }
+            
+            dashboardContent.innerHTML = html;
+        }
+
+        function showAccountSettings() {
+            const dashboardContent = document.getElementById('dashboard-content');
+            
+            let html = `
+                <h3>Account Settings</h3>
+                <div style="display: flex; margin-bottom: 20px;">
+                    <div class="user-avatar" style="width: 80px; height: 80px; font-size: 32px;">${currentUser.name.charAt(0).toUpperCase()}</div>
+                    <div style="margin-left: 20px;">
+                        <h4>${currentUser.name}</h4>
+                        <p>${currentUser.business}</p>
+                        <p>${currentUser.phone}</p>
+                        <p>${currentUser.district}, ${currentUser.province}</p>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="deleteAccount()">Delete My Account</button>
+            `;
+            
+            dashboardContent.innerHTML = html;
+        }
+
+        function showSellersAdmin() {
+            const adminContent = document.getElementById('admin-content');
+            const sellers = users.filter(u => u.type === 'seller');
+            
+            let html = `
+                <h3>Seller Accounts</h3>
+                <p><strong>Auto Verify Status:</strong> 
+                    <span class="auto-verify-status ${autoVerify ? 'auto-verify-on' : 'auto-verify-off'}">
+                        ${autoVerify ? 'ON' : 'OFF'}
+                    </span>
+                </p>
+            `;
+            
+            if (sellers.length === 0) {
+                html += '<p>No seller accounts found.</p>';
+            } else {
+                html += `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Seller</th>
+                                <th>Business</th>
+                                <th>Contact</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                sellers.forEach(seller => {
+                    html += `
+                        <tr>
+                            <td>${seller.name}</td>
+                            <td>${seller.business}</td>
+                            <td>${seller.phone}</td>
+                            <td>${seller.district}, ${seller.province}</td>
+                            <td>
+                                ${seller.verified ? 
+                                    '<span class="verified-badge">Verified</span>' : 
+                                    '<span class="pending-badge">Pending</span>'
+                                }
+                            </td>
+                            <td>
+                                ${!seller.verified ? 
+                                    `<button class="action-btn btn-primary" onclick="verifySeller('${seller.id}')">Verify</button>` : 
+                                    `<button class="action-btn btn-secondary" onclick="unverifySeller('${seller.id}')">Unverify</button>`
+                                }
+                                <button class="action-btn btn-secondary" onclick="deleteSeller('${seller.id}')">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+            }
+            
+            adminContent.innerHTML = html;
+        }
+
+        function showProductsAdmin() {
+            const adminContent = document.getElementById('admin-content');
+            
+            let html = `
+                <h3>All Products</h3>
+                <p><strong>Auto Verify Status:</strong> 
+                    <span class="auto-verify-status ${autoVerify ? 'auto-verify-on' : 'auto-verify-off'}">
+                        ${autoVerify ? 'ON' : 'OFF'}
+                    </span>
+                </p>
+            `;
+            
+            if (products.length === 0) {
+                html += '<p>No products found.</p>';
+            } else {
+                html += `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Seller</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                products.forEach(product => {
+                    const seller = users.find(u => u.id === product.sellerId);
+                    
+                    html += `
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+                                    <div>
+                                        <strong>${product.name}</strong>
+                                        <p style="margin: 0; font-size: 0.9em;">${product.description}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${seller ? seller.business : 'Unknown'}</td>
+                            <td>RWF ${product.price.toLocaleString()}</td>
+                            <td>
+                                ${product.verified ? 
+                                    '<span class="verified-badge">Verified</span>' : 
+                                    '<span class="pending-badge">Pending</span>'
+                                }
+                            </td>
+                            <td>
+                                ${!product.verified ? 
+                                    `<button class="action-btn btn-primary" onclick="verifyProduct('${product.id}')">Verify</button>` : 
+                                    `<button class="action-btn btn-secondary" onclick="unverifyProduct('${product.id}')">Unverify</button>`
+                                }
+                                <button class="action-btn btn-secondary" onclick="deleteProductAdmin('${product.id}')">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+            }
+            
+            adminContent.innerHTML = html;
+        }
+
+        function handleAddProduct(e) {
+            e.preventDefault();
+            const name = document.getElementById('product-name').value;
+            const price = parseInt(document.getElementById('product-price').value);
+            const description = document.getElementById('product-description').value;
+            const imageInput = document.getElementById('product-image');
+            
+            if (!imageInput.files[0]) {
+                alert('Please upload a product image.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const newProduct = {
+                    id: generateId(),
+                    sellerId: currentUser.id,
+                    name,
+                    price,
+                    description,
+                    image: e.target.result,
+                    verified: autoVerify // Use autoVerify setting
+                };
+                
+                products.push(newProduct);
+                saveProducts();
+                
+                closeModal('add-product-modal');
+                document.getElementById('add-product-form').reset();
+                document.getElementById('image-preview').innerHTML = '';
+                
+                showSellerProducts();
+                alert(`Product added successfully! ${autoVerify ? 'It is now visible to customers.' : 'It will be visible after admin verification.'}`);
+            };
+            
+            reader.readAsDataURL(imageInput.files[0]);
+        }
+
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // Check file type
+            if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+                alert('Please upload a JPEG or PNG image.');
+                return;
+            }
+            
+            // Check file size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Image size must be less than 5MB.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('image-preview').innerHTML = `
+                    <img src="${e.target.result}" style="max-width: 200px; max-height: 200px; border-radius: 4px;">
+                `;
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        // Admin functions
+        function verifySeller(sellerId) {
+            const seller = users.find(u => u.id === sellerId);
+            if (seller) {
+                seller.verified = true;
+                saveUsers();
+                showSellersAdmin();
+                alert('Seller verified successfully!');
+            }
+        }
+
+        function unverifySeller(sellerId) {
+            const seller = users.find(u => u.id === sellerId);
+            if (seller) {
+                seller.verified = false;
+                saveUsers();
+                showSellersAdmin();
+                alert('Seller unverified!');
+            }
+        }
+
+        function deleteSeller(sellerId) {
+            if (confirm('Are you sure you want to delete this seller account? This will also delete all their products.')) {
+                // Remove seller
+                users = users.filter(u => u.id !== sellerId);
+                
+                // Remove seller's products
+                products = products.filter(p => p.sellerId !== sellerId);
+                
+                saveUsers();
+                saveProducts();
+                showSellersAdmin();
+                alert('Seller account deleted successfully!');
+            }
+        }
+
+        function verifyProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                product.verified = true;
+                saveProducts();
+                showProductsAdmin();
+                alert('Product verified successfully!');
+            }
+        }
+
+        function unverifyProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                product.verified = false;
+                saveProducts();
+                showProductsAdmin();
+                alert('Product unverified!');
+            }
+        }
+
+        function deleteProductAdmin(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                products = products.filter(p => p.id !== productId);
+                saveProducts();
+                showProductsAdmin();
+                alert('Product deleted successfully!');
+            }
+        }
+
+        // Seller functions
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                products = products.filter(p => p.id !== productId);
+                saveProducts();
+                showSellerProducts();
+                alert('Product deleted successfully!');
+            }
+        }
+
+        function deleteAccount() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                // Remove user
+                users = users.filter(u => u.id !== currentUser.id);
+                
+                // Remove user's products
+                products = products.filter(p => p.sellerId !== currentUser.id);
+                
+                saveUsers();
+                saveProducts();
+                logout();
+                alert('Your account has been deleted.');
+            }
+        }
+
+        // Utility functions
+        function generateId() {
+            return '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function saveUsers() {
+            localStorage.setItem('dacco_users', JSON.stringify(users));
+        }
+
+        function saveProducts() {
+            localStorage.setItem('dacco_products', JSON.stringify(products));
+        }
+    </script>
+</body>
+</html>
