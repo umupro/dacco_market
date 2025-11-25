@@ -1487,5 +1487,182 @@
             localStorage.setItem('dacco_products', JSON.stringify(products));
         }
     </script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    setDoc,
+    doc,
+    getDocs,
+    query,
+    where
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+  // TODO: Replace with your project credentials
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  /* ----------------- Helper Wrappers ----------------- */
+  async function registerUser(data) {
+    const email = `${data.phone}@dacco.rw`;
+    const cred = await createUserWithEmailAndPassword(auth, email, data.password);
+    await setDoc(doc(db, "users", cred.user.uid), {
+      uid: cred.user.uid,
+      name: data.name,
+      business: data.business,
+      phone: data.phone,
+      province: data.province,
+      district: data.district,
+      verified: false,
+      type: "seller"
+    });
+    return cred.user;
+  }
+
+  async function loginUser(phone, password) {
+    const email = `${phone}@dacco.rw`;
+    return signInWithEmailAndPassword(auth, email, password);
+  }
+
+  async function addProduct({ name, price, description, imageFile, autoVerify }) {
+    const uid = auth.currentUser.uid;
+    const path = `products/${uid}/${Date.now()}_${imageFile.name}`;
+    const imageRef = ref(storage, path);
+    await uploadBytes(imageRef, imageFile);
+    const url = await getDownloadURL(imageRef);
+    await addDoc(collection(db, "products"), {
+      sellerUid: uid,
+      name,
+      price,
+      description,
+      image: url,
+      verified: autoVerify,
+      createdAt: Date.now()
+    });
+  }
+
+  async function fetchProducts(filters = {}) {
+    let q = collection(db, "products");
+    if (filters.province) q = query(q, where("province", "==", filters.province));
+    if (filters.district) q = query(q, where("district", "==", filters.district));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  }
+
+  window.firebaseHelpers = {
+    registerUser,
+    loginUser,
+    addProduct,
+    fetchProducts,
+    signOut: () => signOut(auth)
+  };
+
+  /* ----------------- Override Legacy Handlers ----------------- */
+  window.handleRegistration = async function (e) {
+    e.preventDefault();
+    const data = {
+      name: document.getElementById("reg-name").value,
+      business: document.getElementById("reg-business").value,
+      phone: document.getElementById("reg-phone").value,
+      password: document.getElementById("reg-password").value,
+      province: document.getElementById("reg-province").value,
+      district: document.getElementById("reg-district").value
+    };
+    try {
+      await firebaseHelpers.registerUser(data);
+      closeModal("register-modal");
+      alert("Registration successful! Your account is pending admin verification.");
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  window.handleLogin = async function (e) {
+    e.preventDefault();
+    const phone = document.getElementById("login-phone").value;
+    const password = document.getElementById("login-password").value;
+    try {
+      await firebaseHelpers.loginUser(phone, password);
+      currentUser = { name: phone, type: "seller" }; // Simplified; fetch user data as needed
+      closeModal("login-modal");
+      checkUserStatus();
+    } catch (err) {
+      alert("Login failed: " + err.message);
+    }
+  };
+
+  window.handleAddProduct = async function (e) {
+    e.preventDefault();
+    const imageInput = document.getElementById("product-image");
+    if (!imageInput.files[0]) {
+      alert("Please upload a product image.");
+      return;
+    }
+
+    const product = {
+      name: document.getElementById("product-name").value,
+      price: parseFloat(document.getElementById("product-price").value),
+      description: document.getElementById("product-description").value,
+      imageFile: imageInput.files[0],
+      autoVerify
+    };
+    try {
+      await firebaseHelpers.addProduct(product);
+      closeModal("add-product-modal");
+      document.getElementById("add-product-form").reset();
+      document.getElementById("image-preview").innerHTML = "";
+      alert("Product added successfully!");
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  window.loadProducts = async function () {
+    const filters = {
+      province: document.getElementById("province-filter").value,
+      district: document.getElementById("district-filter").value
+    };
+    const data = await firebaseHelpers.fetchProducts(filters);
+    const grid = document.getElementById("products-grid");
+    grid.innerHTML = "";
+    data.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <img class="product-image" src="${p.image}" alt="${p.name}">
+        <div class="product-info">
+          <div class="product-company">${p.business || ""}</div>
+          <h3>${p.name}</h3>
+          <p class="product-price">RWF ${p.price.toLocaleString()}</p>
+        </div>`;
+      grid.appendChild(card);
+    });
+  };
+</script>
 </body>
 </html>
